@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+         		http://www.springframework.org/schema/beans
+         		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         		http://www.springframework.org/schema/util
+         		http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <import resource="auditoriums.xml"/>
+
+    <util:list id="eventsList" list-class="java.util.ArrayList" value-type="ua.epam.spring.hometask.domain.Event">
+        <bean id="event1" name="event1" class="ua.epam.spring.hometask.domain.Event">
+            <property name="name" value="James Bond"/>
+            <property name="basePrice" value="#{T(java.lang.Math).random() * 100.0}"/>
+            <property name="rating">
+                <value type="ua.epam.spring.hometask.domain.EventRating">LOW</value>
+            </property>
+            <property name="auditoriums">
+                <map key-type="java.time.LocalDateTime" value-type="ua.epam.spring.hometask.domain.Auditorium">
+                    <entry key="2016-04-25T20:00:00" value-ref="blue-auditorium"/>
+                    <entry key="2016-04-24T21:00:00" value-ref="blue-auditorium"/>
+                    <entry key="2016-04-24T21:00:00" value-ref="red-auditorium"/>
+                </map>
+            </property>
+        </bean>
+        <bean id="event2" name="event2" class="ua.epam.spring.hometask.domain.Event">
+            <property name="name" value="Martian"/>
+            <property name="basePrice" value="#{T(java.lang.Math).random() * 100.0}"/>
+            <property name="rating">
+                <value type="ua.epam.spring.hometask.domain.EventRating">HIGH</value>
+            </property>
+            <property name="auditoriums">
+                <map key-type="java.time.LocalDateTime" value-type="ua.epam.spring.hometask.domain.Auditorium">
+                    <entry key="2016-04-25T20:00:00" value-ref="green-auditorium"/>
+                    <entry key="2016-04-24T21:00:00" value-ref="red-auditorium"/>
+                    <entry key="2016-04-24T21:00:00" value-ref="blue-auditorium"/>
+                </map>
+            </property>
+        </bean>
+    </util:list>
+
+</beans>

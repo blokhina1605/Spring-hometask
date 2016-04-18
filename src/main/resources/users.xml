@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <util:list id="usersList" list-class="java.util.ArrayList" value-type="ua.epam.spring.hometask.domain.User">
+        <bean id="user1" class="ua.epam.spring.hometask.domain.User">
+            <property name="firstName" value="John"/>
+            <property name="lastName" value="Duohn"/>
+            <property name="id" value="0"/>
+            <property name="birthDate" value="23/09/1994"/>
+            <property name="email" value="abc@email.com"/>
+        </bean>
+        <bean id="user2" class="ua.epam.spring.hometask.domain.User">
+            <property name="firstName" value="Dan"/>
+            <property name="lastName" value="Bam"/>
+            <property name="id" value="1"/>
+            <property name="birthDate" value="13/04/1999"/>
+            <property name="email" value="Dan@email.com"/>
+        </bean>
+        <bean id="user3" class="ua.epam.spring.hometask.domain.User">
+            <property name="firstName" value="Raghu"/>
+            <property name="id" value="2"/>
+            <property name="birthDate" value="13/10/2010"/>
+            <property name="email" value="Raghu@email.com"/>
+        </bean>
+    </util:list>
+</beans>

@@ -1,5 +1,7 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.epam.spring.hometask.daos.AuditoriumDao;
 import ua.epam.spring.hometask.daos.impl.AuditoriumDaoImpl;
 import ua.epam.spring.hometask.domain.Auditorium;
@@ -12,8 +14,10 @@ import java.util.Set;
 /**
  * @author Yevheniia_Blokhina.
  */
+@Service
 public class AuditoriumServiceImpl implements AuditoriumService {
 
+    @Autowired
     private AuditoriumDao auditoriumDao;
 
     @Nonnull

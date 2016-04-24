@@ -2,6 +2,7 @@ package ua.epam.spring.hometask.daos.impl;
 
 import org.joda.time.Days;
 import org.joda.time.DurationFieldType;
+import org.springframework.stereotype.Repository;
 import ua.epam.spring.hometask.daos.EventDao;
 import ua.epam.spring.hometask.daos.GenericDaoImpl;
 import ua.epam.spring.hometask.domain.Event;
@@ -9,9 +10,7 @@ import ua.epam.spring.hometask.domain.Event;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -19,7 +18,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 /**
  * @author Yevheniia_Blokhina.
  */
+@Repository
 public class EventDaoImpl extends GenericDaoImpl<Event> implements ua.epam.spring.hometask.daos.EventDao {
+
+    private static long counter = 0;
 
     @Override
     public Event findByName(String name) {
@@ -57,5 +59,13 @@ public class EventDaoImpl extends GenericDaoImpl<Event> implements ua.epam.sprin
             if (flag) events.add(event);
         }
         return events;
+    }
+
+    public Map<Long, Event> getEventMap() {
+        return entityMap;
+    }
+
+    public void setEventMap(Map<Long, Event> eventMap) {
+        this.entityMap = eventMap;
     }
 }

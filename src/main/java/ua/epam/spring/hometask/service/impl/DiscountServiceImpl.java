@@ -1,5 +1,7 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.epam.spring.hometask.domain.strategy.BirthdayDiscount;
 import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.domain.strategy.DiscountStrategy;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * @author Yevheniia_Blokhina.
  */
+@Service
 public class DiscountServiceImpl implements DiscountService {
 
     private List<DiscountStrategy> discountStrategies;
@@ -34,6 +37,7 @@ public class DiscountServiceImpl implements DiscountService {
         return discountStrategies;
     }
 
+    @Autowired
     public void setDiscountStrategies(List<DiscountStrategy> discountStrategies) {
         this.discountStrategies = discountStrategies;
     }

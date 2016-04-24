@@ -1,5 +1,8 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import ua.epam.spring.hometask.daos.AuditoriumDao;
 import ua.epam.spring.hometask.daos.TicketDao;
 import ua.epam.spring.hometask.daos.UserDao;
@@ -15,12 +18,17 @@ import java.util.*;
 /**
  * @author Yevheniia_Blokhina.
  */
+@Service
 public class BookingServiceImpl implements BookingService {
 
-    private TicketDao ticketDAO;
-
+    @Autowired
     private UserDao userDao;
 
+    @Qualifier("ticketDaoImpl")
+    @Autowired
+    private TicketDao ticketDAO;
+
+    @Autowired
     private DiscountService discountService;
 
     @Override

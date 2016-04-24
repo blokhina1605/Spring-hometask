@@ -1,8 +1,11 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.epam.spring.hometask.daos.EventDao;
 import ua.epam.spring.hometask.daos.impl.EventDaoImpl;
 import ua.epam.spring.hometask.domain.Event;
+import ua.epam.spring.hometask.domain.User;
 import ua.epam.spring.hometask.service.EventService;
 
 import javax.annotation.Nonnull;
@@ -10,14 +13,22 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Yevheniia_Blokhina.
  */
+
+@Service
 public class EventServiceImpl implements EventService {
 
+    @Autowired
     private EventDao eventDao;
+
+    public void populateTestData(Map<Long, Event> userMap) {
+        eventDao.populateTestData(userMap);
+    }
 
     @Nullable
     @Override
@@ -56,5 +67,13 @@ public class EventServiceImpl implements EventService {
     @Override
     public Collection<Event> getAll() {
         return eventDao.getAll();
+    }
+
+    public EventDao getEventDao() {
+        return eventDao;
+    }
+
+    public void setEventDao(EventDao eventDao) {
+        this.eventDao = eventDao;
     }
 }

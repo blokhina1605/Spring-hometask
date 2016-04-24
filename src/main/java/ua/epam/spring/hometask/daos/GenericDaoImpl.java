@@ -13,15 +13,7 @@ import java.util.Map;
  */
 public abstract class GenericDaoImpl<T extends DomainObject> implements GenericDao<T> {
 
-    private Map<Long, T> entityMap = Collections.EMPTY_MAP;
-
-    private Class<T> type;
-
-    public GenericDaoImpl() {
-        Type t = getClass().getGenericSuperclass();
-        ParameterizedType pt = (ParameterizedType) t;
-        type = (Class) pt.getActualTypeArguments()[0];
-    }
+    protected Map<Long, T> entityMap = Collections.EMPTY_MAP;
 
     @Override
     public T create(T t) {
@@ -49,4 +41,18 @@ public abstract class GenericDaoImpl<T extends DomainObject> implements GenericD
     public Collection<T> getAll() {
         return entityMap.values();
     }
+
+    @Override
+    public void populateTestData(Map<Long, T> entityMap) {
+        this.entityMap = entityMap;
+    }
+
+    public Map<Long, T> getEntityMap() {
+        return entityMap;
+    }
+
+    public void setEntityMap(Map<Long, T> entityMap) {
+        this.entityMap = entityMap;
+    }
+
 }

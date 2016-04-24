@@ -1,5 +1,7 @@
 package ua.epam.spring.hometask.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.epam.spring.hometask.daos.UserDao;
 import ua.epam.spring.hometask.daos.impl.UserDaoImpl;
 import ua.epam.spring.hometask.domain.User;
@@ -8,12 +10,15 @@ import ua.epam.spring.hometask.service.UserService;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Yevheniia_Blokhina.
  */
+@Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserDao userDao;
 
     @Nullable
@@ -43,6 +48,10 @@ public class UserServiceImpl implements UserService {
         return userDao.getAll();
     }
 
+    public void populateTestData(Map<Long, User> userMap) {
+        userDao.populateTestData(userMap);
+    }
+
     public UserDao getUserDao() {
         return userDao;
     }
@@ -50,4 +59,5 @@ public class UserServiceImpl implements UserService {
     public void setUserDao(UserDaoImpl userDao) {
         this.userDao = userDao;
     }
+
 }

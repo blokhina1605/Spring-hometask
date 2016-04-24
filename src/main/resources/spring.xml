@@ -12,15 +12,33 @@
 
     <import resource="auditoriums.xml"/>
     <import resource="users.xml"/>
+    <import resource="events.xml"/>
     <import resource="discount.xml"/>
 
-    <bean id="demo" class="ua.epam.spring.hometask.Demo"/>
+    <bean id="demo" name="demo" class="ua.epam.spring.hometask.Demo">
+        <property name="bookingService" ref="bookingService"/>
+        <property name="auditoriumService" ref="auditoriumService"/>
+        <property name="eventService" ref="eventService"/>
+        <property name="userService" ref="userService"/>
+        <property name="discountService" ref="discountService"/>
+    </bean>
 
+        <bean name="runner" class="ua.epam.spring.hometask.AppRunner">
+        <property name="demo" ref="demo"/>
+    </bean>
     <!--DAOS-->
-    <bean id="auditoriumDao" class="ua.epam.spring.hometask.daos.impl.AuditoriumDaoImpl"/>
-    <bean id="eventDao" class="ua.epam.spring.hometask.daos.impl.EventDaoImpl"/>
+
+    <bean id="auditoriumDao" class="ua.epam.spring.hometask.daos.impl.AuditoriumDaoImpl">
+        <property name="auditoriumMap" ref="auditoriumMap"/>
+    </bean>
+    <bean id="eventDao" class="ua.epam.spring.hometask.daos.impl.EventDaoImpl">
+        <property name="eventMap" ref="eventMap"/>
+    </bean>
+
     <bean id="ticketDao" class="ua.epam.spring.hometask.daos.impl.TicketDaoImpl"/>
-    <bean id="userDao" class="ua.epam.spring.hometask.daos.impl.UserDaoImpl"/>
+    <bean id="userDao" class="ua.epam.spring.hometask.daos.impl.UserDaoImpl">
+        <property name="entityMap" ref="usersMap"/>
+    </bean>
 
     <!--SERVICES-->
     <bean id="auditoriumService" class="ua.epam.spring.hometask.service.impl.AuditoriumServiceImpl"
@@ -29,7 +47,9 @@
     <bean id="userService" class="ua.epam.spring.hometask.service.impl.UserServiceImpl"
           p:userDao-ref="userDao">
     </bean>
-    <bean id="eventService" class="ua.epam.spring.hometask.service.impl.EventServiceImpl"/>
+    <bean id="eventService" class="ua.epam.spring.hometask.service.impl.EventServiceImpl">
+        <property name="eventDao" ref="eventDao"/>
+    </bean>
     <bean id="bookingService" class="ua.epam.spring.hometask.service.impl.BookingServiceImpl">
         <property name="discountService" ref="discountService"/>
         <property name="ticketDAO" ref="ticketDao"/>

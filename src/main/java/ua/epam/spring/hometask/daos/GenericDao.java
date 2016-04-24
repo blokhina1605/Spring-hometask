@@ -1,6 +1,7 @@
 package ua.epam.spring.hometask.daos;
 
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -17,4 +18,6 @@ public interface GenericDao<T> {
     T update(T t);
 
     Collection<T> getAll();
+
+    void populateTestData(Map<Long, T> entityMap);
 }

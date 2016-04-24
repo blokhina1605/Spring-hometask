@@ -5,6 +5,8 @@ package ua.epam.spring.hometask.domain;
  */
 public class DomainObject {
 
+    protected static long counter = 0;
+
     private Long id;
 
     public Long getId() {

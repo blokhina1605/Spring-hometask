@@ -42,6 +42,12 @@ public class EventServiceImpl implements EventService {
         return eventDao.getForDateRange(from, to);
     }
 
+    @Nullable
+    @Override
+    public double getPriceByName(@Nonnull String name) {
+        return eventDao.findByName(name).getBasePrice();
+    }
+
     @Nonnull
     @Override
     public Set<Event> getNextEvents(@Nonnull LocalDateTime to) {

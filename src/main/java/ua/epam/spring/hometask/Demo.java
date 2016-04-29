@@ -65,6 +65,7 @@ public class Demo {
                 " 2 - get event by name \n" +
                 " 3 - get all events \n" +
                 " 4 - register user \n" +
+                " 5 - get event price \n" +
                 " 0 - exit \n" +
                 "Command: ");
     }
@@ -81,6 +82,8 @@ public class Demo {
                 " 8 - remove user \n" +
                 " 9 - remove event \n" +
                 " 10 - get all users \n" +
+                " 11 - counter statistics \n" +
+                " 12 - get event price \n" +
                 " 0 - exit \n" +
                 "Command: ");
     }
@@ -159,6 +162,10 @@ public class Demo {
             case "11":
                 getCounterAspect();
                 getAdminActions();
+                break;
+            case "12":
+                getEventPrice();
+                getAdminActions();
             case "0":
                 System.out.println("Exiting...");
                 exit();
@@ -172,11 +179,18 @@ public class Demo {
     }
 
     private void getCounterAspect() {
-        System.out.println(counterAspect.cointer);
-        Set<String> nameKeys = counterAspect.getNameCounter().keySet();
-        System.out.println("Event 'getByName' statistics");
-        for (String name : nameKeys) {
-            System.out.println("Event '" + name + "' got " + counterAspect.getNameCounter().get(name) + " times");
+        Set<Event> nameKeys = counterAspect.getNameCounter().keySet();
+        System.out.println("Event 'get by name' statistics");
+        if (nameKeys.size()==0) System.out.println("No events were get by name");
+        for (Event name : nameKeys) {
+            System.out.println("Event '" + name.getName() + "' name got " + counterAspect.getNameCounter().get(name) + " times");
+        }
+
+        Set<String> priceKeys = counterAspect.getPriceCounter().keySet();
+        System.out.println("Event 'get base price' statistics");
+        if (priceKeys.size()==0) System.out.println("No events were get by name");
+        for (String price : priceKeys) {
+            System.out.println("Event '" + price + "' price got " + counterAspect.getPriceCounter().get(price) + " times");
         }
     }
 
@@ -200,6 +214,9 @@ public class Demo {
                 registerUser();
                 getUserActions();
                 break;
+            case "5":
+                getEventPrice();
+                getAdminActions();
             case "0":
                 exit();
                 break;
@@ -209,6 +226,12 @@ public class Demo {
                 getUserActions();
                 break;
         }
+    }
+
+    private void getEventPrice() {
+        System.out.println("Enter event name:");
+        String eventName = readFromConsole();
+        System.out.println(eventService.getPriceByName(eventName));
     }
 
     private void exit() {

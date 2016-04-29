@@ -1,5 +1,6 @@
 package ua.epam.spring.hometask.aspects;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -16,43 +17,46 @@ import java.util.Map;
 @Component
 public class DiscountAspect {
 
-    private Map<Double, Integer> totalDiscountCounter = new HashMap<>();
+    private Map<String, Integer> totalDiscountCounter = new HashMap<>();
 
-    private Map<Double, Map<String, Integer>> userDiscountCounter = new HashMap<>();
+    private Map<String, Map<String, Integer>> userDiscountCounter = new HashMap<>();
 
-    @Pointcut("execution(private double getBirthdayDiscount(..))")
+    @Pointcut("execution(* ua.epam.spring.hometask.domain.strategy.BirthdayDiscount.getDiscount(..))")
     private void allBirthdayDiscountCalls() {
     }
 
-    @Pointcut("execution(private double getEveryTenDiscount(..))")
+    @Pointcut("execution(* ua.epam.spring.hometask.domain.strategy.TicketDiscount.getDiscount(..))")
     private void everyTenDiscountCalls() {
     }
 
-    @AfterReturning(pointcut = "allBirthdayDiscountCalls() || everyTenDiscountCalls()", returning = "discount")
-    private void countAllBirthDayDiscountCalls(Double discount) {
-        if (!totalDiscountCounter.containsKey(discount))
-            totalDiscountCounter.put(discount, 0);
-        totalDiscountCounter.put(discount, totalDiscountCounter.get(discount) + 1);
+    @AfterReturning(pointcut = "allBirthdayDiscountCalls() || everyTenDiscountCalls()")
+    private void countAllBirthDayDiscountCalls(JoinPoint joinPoint) {
+        String discountName = joinPoint.getTarget().getClass().getCanonicalName();
+        if (!totalDiscountCounter.containsKey(discountName))
+            totalDiscountCounter.put(discountName, 0);
+        totalDiscountCounter.put(discountName, totalDiscountCounter.get(discountName) + 1);
     }
 
-    @AfterReturning(pointcut = "execution(public double getDiscount(..)) && args(user,..)", returning = "discount")
-    private void discountForEveryUserCalls(User user, Double discount) {
-        String userName = user.getFirstName()   ;
-        if (!userDiscountCounter.containsKey(discount)) {
-            userDiscountCounter.put(discount, new HashMap<String, Integer>());
-            userDiscountCounter.get(discount).put(userName, 0);
+    @AfterReturning(pointcut = "execution(* ua.epam.spring.hometask.domain.strategy.DiscountStrategy.getDiscount(..)) && args(user,..)")
+    private void discountForEveryUserCalls(JoinPoint joinPoint, User user) {
+        String userName = user.getFirstName();
+        String discountName = joinPoint.getTarget().getClass().getCanonicalName();
+
+        if (!userDiscountCounter.containsKey(discountName)) {
+            userDiscountCounter.put(discountName, new HashMap<String, Integer>());
+            userDiscountCounter.get(discountName).put(userName, 0);
         }
-        if (!userDiscountCounter.get(discount).containsKey(userName)) {
-            userDiscountCounter.get(discount).put(userName, 0);
+        if (!userDiscountCounter.get(discountName).containsKey(userName)) {
+            userDiscountCounter.get(discountName).put(userName, 0);
         }
-        userDiscountCounter.get(discount).put(userName, userDiscountCounter.get(discount).get(userName) + 1);
+        userDiscountCounter.get(discountName).put(userName, userDiscountCounter.get(discountName).get(userName) + 1);
     }
 
-    public Map<Double, Integer> getTotalDiscountCounter() {
+    public Map<String, Integer> getTotalDiscountCounter() {
         return totalDiscountCounter;
     }
 
-    public Map<Double, Map<String, Integer>> getUserDiscountCounter() {
+    public Map<String, Map<String, Integer>> getUserDiscountCounter() {
         return userDiscountCounter;
     }
 }

@@ -7,9 +7,9 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import ua.epam.spring.hometask.domain.Event;
+import ua.epam.spring.hometask.domain.Ticket;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Yevheniia_Blokhina.
@@ -18,18 +18,18 @@ import java.util.Map;
 @Component
 public class CounterAspect {
 
-    private Map<String, Integer> nameCounter = new HashMap<>();
+    private Map<Event, Integer> nameCounter = new HashMap<>();
 
-    private Map<Double, Integer> priceCounter = new HashMap<>();
+    private Map<String, Integer> priceCounter = new HashMap<>();
 
-    private Map<Event, Integer> bookTicketsCounter = new HashMap<>();
+    private Map<Ticket, Integer> bookTicketsCounter = new HashMap<>();
     public int cointer = 1;
 
-    @Pointcut("execution(* ua.epam.spring.hometask.daos.impl.EventDaoImpl.findByName(..))")
+    @Pointcut("execution(* ua.epam.spring.hometask.service.impl.EventServiceImpl.findByName(..))")
     public void anyEventGetByName() {
     }
 
-    @Pointcut("execution(* ua.epam.spring.hometask.domain.Event.getBasePrice(..))")
+    @Pointcut("execution(* ua.epam.spring.hometask.service.impl.EventServiceImpl.getPriceByName(..))")
     public void anyEventGetPrices() {
     }
 
@@ -37,65 +37,41 @@ public class CounterAspect {
     public void anyEventBookTickets() {
     }
 
-    @Pointcut("execution(* ua.epam.spring.hometask.daos.impl.EventDaoImpl.findByName(..))")
-    public void doBeforeTask() {
-    }
-
-    @Before("doBeforeTask()")
-    public void Lol() {
-        System.out.println("LOOOOOOL");
-
-        cointer++;
-    }
-
-    @Before("execution(* ua.epam.spring.hometask.daos.impl.EventDaoImpl.findByName(..))")
-    public void lol(){
-        System.out.println("tuuuut loooooooooooooooooool");
-    }
-
-    @AfterReturning(pointcut = "doBeforeTask()", returning = "eventName")
-    public void lol2(String eventName){
-        System.out.println("tuuuut looooooooooooooooooo222222222222222222222222222l");
-
-    }
-    @AfterReturning(pointcut = "execution(* ua.epam.spring.hometask.daos.impl.EventDaoImpl.findByName(..))", returning = "eventName")
-    public void countGetNames(JoinPoint joinPoint, String eventName) {
-        System.out.println("==================================================");
-        if (!nameCounter.containsKey(eventName))
-            nameCounter.put(eventName, 0);
-        nameCounter.put(eventName, nameCounter.get(eventName) + 1);
-        System.out.println("==================================================");
-
+    @AfterReturning(pointcut = "anyEventGetByName()", returning = "event")
+    public void countGetNames(Event event) {
+        if (!nameCounter.containsKey(event))
+            nameCounter.put(event, 0);
+        nameCounter.put(event, nameCounter.get(event) + 1);
     }
 
     @AfterReturning(pointcut = "anyEventGetPrices()", returning = "ticketPrice")
-    public void countGetPrices(JoinPoint joinPoint, double ticketPrice) {
-        System.out.println("**********************************************************");
-
-        if (!priceCounter.containsKey(ticketPrice))
-            priceCounter.put(ticketPrice, 0);
-        priceCounter.put(ticketPrice, priceCounter.get(ticketPrice) + 1);
+    public void countGetPrices(JoinPoint joinPoint) {
+        String eventName = Arrays.toString(joinPoint.getArgs());
+        if (!priceCounter.containsKey(eventName))
+            priceCounter.put(eventName, 0);
+        priceCounter.put(eventName, priceCounter.get(eventName) + 1);
     }
 
     @AfterReturning(pointcut = "anyEventBookTickets()")
     public void countBookTickets(JoinPoint joinPoint) {
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-
-        Object targetObject = joinPoint.getTarget();
-        if (!bookTicketsCounter.containsKey(targetObject))
-            bookTicketsCounter.put((Event) targetObject, 0);
-        bookTicketsCounter.put((Event) targetObject, bookTicketsCounter.get(targetObject) + 1);
+        Set ticketSet = new HashSet<>(Arrays.asList(joinPoint.getArgs()));
+        for (Object ticket : ticketSet) {
+            Ticket ticket1 = (Ticket) ticket;
+            if (!bookTicketsCounter.containsKey(ticket1))
+                bookTicketsCounter.put(ticket1, 0);
+            bookTicketsCounter.put(ticket1, bookTicketsCounter.get(ticket) + 1);
+        }
     }
 
-    public Map<String, Integer> getNameCounter() {
+    public Map<Event, Integer> getNameCounter() {
         return nameCounter;
     }
 
-    public Map<Double, Integer> getPriceCounter() {
+    public Map<String, Integer> getPriceCounter() {
         return priceCounter;
     }
 
-    public Map<Event, Integer> getBookTicketsCounter() {
+    public Map<Ticket, Integer> getBookTicketsCounter() {
         return bookTicketsCounter;
     }
 

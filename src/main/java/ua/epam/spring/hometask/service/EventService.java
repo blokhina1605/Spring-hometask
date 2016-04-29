@@ -24,6 +24,10 @@ public interface EventService extends AbstractDomainObjectService<Event> {
     @Nullable
     Event getByName(@Nonnull String name);
 
+    public
+    @Nullable
+    double getPriceByName(@Nonnull String name);
+
     /*
      * Finding all events that air on specified date range
      * 
@@ -45,6 +49,9 @@ public interface EventService extends AbstractDomainObjectService<Event> {
      * s
      * @return Set of events
      */
-     public @Nonnull Set<Event> getNextEvents(@Nonnull LocalDateTime to);
+    public
+    @Nonnull
+    Set<Event> getNextEvents(@Nonnull LocalDateTime to);
+
 
 }

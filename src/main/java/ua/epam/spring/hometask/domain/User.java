@@ -3,9 +3,7 @@ package ua.epam.spring.hometask.domain;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.NavigableSet;
-import java.util.Objects;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Yuriy_Tkach
@@ -22,6 +20,8 @@ public class User extends DomainObject {
 
     private LocalDate birthDate;
 
+    private List<Event> luckyEvents = new ArrayList<>();
+
     private NavigableSet<Ticket> tickets = new TreeSet<>();
 
     public User() {
@@ -36,6 +36,9 @@ public class User extends DomainObject {
         setId(counter++);
     }
 
+    public void setLuckyEvent(Event e) {
+        luckyEvents.add(e);
+    }
     public String getFirstName() {
         return firstName;
     }

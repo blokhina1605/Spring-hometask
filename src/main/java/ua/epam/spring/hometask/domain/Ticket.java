@@ -42,6 +42,7 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
         return seat;
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(dateTime, event, seat);
@@ -94,6 +95,7 @@ public class Ticket extends DomainObject implements Comparable<Ticket> {
         }
         return result;
     }
+
 
     @Override
     public String toString() {

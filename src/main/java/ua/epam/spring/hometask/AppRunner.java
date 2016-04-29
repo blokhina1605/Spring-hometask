@@ -2,6 +2,7 @@ package ua.epam.spring.hometask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +16,12 @@ public class AppRunner {
     @Autowired
     private Demo demo;
 
-    public void setDemo(Demo demo) {
-        this.demo = demo;
-    }
-
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring-annotation.xml");
+        AnnotationConfigApplicationContext ctx =
+                new AnnotationConfigApplicationContext();
+        ctx.register(AppConfig.class);
+        ctx.refresh();
+
         AppRunner appRunner = ctx.getBean(AppRunner.class);
 
         appRunner.demo.run();
